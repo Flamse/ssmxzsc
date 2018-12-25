@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssmxzsc.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="ssmxzsc.po.Book">
+    <id column="isbn" jdbcType="CHAR" property="isbn" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="press" jdbcType="VARCHAR" property="press" />
+    <result column="edition" jdbcType="INTEGER" property="edition" />
+    <result column="published" jdbcType="TIMESTAMP" property="published" />
+    <result column="pages" jdbcType="INTEGER" property="pages" />
+    <result column="words" jdbcType="INTEGER" property="words" />
+    <result column="packaging" jdbcType="VARCHAR" property="packaging" />
+    <result column="format" jdbcType="VARCHAR" property="format" />
+    <result column="form" jdbcType="VARCHAR" property="form" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    isbn, title, author, price, press, edition, published, pages, words, packaging, format, 
+    form
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_book
+    where isbn = #{isbn,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_book
+    where isbn = #{isbn,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="ssmxzsc.po.Book">
+    insert into tb_book (isbn, title, author, 
+      price, press, edition, 
+      published, pages, words, 
+      packaging, format, form
+      )
+    values (#{isbn,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{press,jdbcType=VARCHAR}, #{edition,jdbcType=INTEGER}, 
+      #{published,jdbcType=TIMESTAMP}, #{pages,jdbcType=INTEGER}, #{words,jdbcType=INTEGER}, 
+      #{packaging,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, #{form,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ssmxzsc.po.Book">
+    insert into tb_book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="isbn != null">
+        isbn,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="press != null">
+        press,
+      </if>
+      <if test="edition != null">
+        edition,
+      </if>
+      <if test="published != null">
+        published,
+      </if>
+      <if test="pages != null">
+        pages,
+      </if>
+      <if test="words != null">
+        words,
+      </if>
+      <if test="packaging != null">
+        packaging,
+      </if>
+      <if test="format != null">
+        format,
+      </if>
+      <if test="form != null">
+        form,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="isbn != null">
+        #{isbn,jdbcType=CHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="press != null">
+        #{press,jdbcType=VARCHAR},
+      </if>
+      <if test="edition != null">
+        #{edition,jdbcType=INTEGER},
+      </if>
+      <if test="published != null">
+        #{published,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pages != null">
+        #{pages,jdbcType=INTEGER},
+      </if>
+      <if test="words != null">
+        #{words,jdbcType=INTEGER},
+      </if>
+      <if test="packaging != null">
+        #{packaging,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null">
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="form != null">
+        #{form,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="ssmxzsc.po.Book">
+    update tb_book
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="press != null">
+        press = #{press,jdbcType=VARCHAR},
+      </if>
+      <if test="edition != null">
+        edition = #{edition,jdbcType=INTEGER},
+      </if>
+      <if test="published != null">
+        published = #{published,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pages != null">
+        pages = #{pages,jdbcType=INTEGER},
+      </if>
+      <if test="words != null">
+        words = #{words,jdbcType=INTEGER},
+      </if>
+      <if test="packaging != null">
+        packaging = #{packaging,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null">
+        format = #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="form != null">
+        form = #{form,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where isbn = #{isbn,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssmxzsc.po.Book">
+    update tb_book
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      press = #{press,jdbcType=VARCHAR},
+      edition = #{edition,jdbcType=INTEGER},
+      published = #{published,jdbcType=TIMESTAMP},
+      pages = #{pages,jdbcType=INTEGER},
+      words = #{words,jdbcType=INTEGER},
+      packaging = #{packaging,jdbcType=VARCHAR},
+      format = #{format,jdbcType=VARCHAR},
+      form = #{form,jdbcType=VARCHAR}
+    where isbn = #{isbn,jdbcType=CHAR}
+  </update>
+</mapper>

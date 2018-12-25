@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\Repositories\J2EE_demo\ssmxzsc\conf\mybatis-generator-config.xml" />
+	<context id="ssmxzsc" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!-- 配置数据库连接 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/ssmxzsc?useSSL=false"
+			userId="root" password="123456">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 指定javaBean生成的位置 -->
+		<javaModelGenerator targetPackage="ssmxzsc.po"
+			targetProject="ssmxzsc\src">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!--指定sql映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="ssmxzsc.mapper"
+			targetProject="ssmxzsc\src">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 指定dao接口生成的位置，mapper接口 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="ssmxzsc.mapper" targetProject="ssmxzsc\src">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!-- table指定每个表的生成策略 -->
+		<table tableName="tb_address" domainObjectName="Address"
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false" />
+		<table tableName="tb_banner" domainObjectName="Banner"
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false" />
+		<table tableName="tb_book" domainObjectName="Book"
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false" />
+		<table tableName="tb_cart_item" domainObjectName="CartItem"
+      		enableCountByExample="false" enableDeleteByExample="false"
+      		enableSelectByExample="false" enableUpdateByExample="false" />
+     	<table tableName="tb_collect" domainObjectName="Collect"
+      		enableCountByExample="false" enableDeleteByExample="false"
+     		enableSelectByExample="false" enableUpdateByExample="false" />
+     	<table tableName="tb_order" domainObjectName="Order"
+      		enableCountByExample="false" enableDeleteByExample="false"
+      		enableSelectByExample="false" enableUpdateByExample="false" />
+     	<table tableName="tb_order_item" domainObjectName="OrderItem"
+      		enableCountByExample="false" enableDeleteByExample="false"
+      		enableSelectByExample="false" enableUpdateByExample="false" />
+     	<table tableName="tb_recommended" domainObjectName="Recommended"
+      		enableCountByExample="false" enableDeleteByExample="false"
+      		enableSelectByExample="false" enableUpdateByExample="false" />
+     	<table tableName="tb_user" domainObjectName="User"
+      		enableCountByExample="false" enableDeleteByExample="false"
+      		enableSelectByExample="false" enableUpdateByExample="false" />
+	</context>
+</generatorConfiguration>

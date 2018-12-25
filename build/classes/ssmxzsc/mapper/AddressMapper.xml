@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssmxzsc.mapper.AddressMapper">
+  <resultMap id="BaseResultMap" type="ssmxzsc.po.Address">
+    <id column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="user_id" jdbcType="CHAR" property="userId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="added" jdbcType="TIMESTAMP" property="added" />
+    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+    <result column="receiver_phone" jdbcType="CHAR" property="receiverPhone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rid, user_id, address, added, receiver, receiver_phone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_address
+    where rid = #{rid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_address
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="ssmxzsc.po.Address">
+    insert into tb_address (rid, user_id, address, 
+      added, receiver, receiver_phone
+      )
+    values (#{rid,jdbcType=INTEGER}, #{userId,jdbcType=CHAR}, #{address,jdbcType=VARCHAR}, 
+      #{added,jdbcType=TIMESTAMP}, #{receiver,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ssmxzsc.po.Address">
+    insert into tb_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="added != null">
+        added,
+      </if>
+      <if test="receiver != null">
+        receiver,
+      </if>
+      <if test="receiverPhone != null">
+        receiver_phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=CHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="added != null">
+        #{added,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiver != null">
+        #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null">
+        #{receiverPhone,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="ssmxzsc.po.Address">
+    update tb_address
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="added != null">
+        added = #{added,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiver != null">
+        receiver = #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null">
+        receiver_phone = #{receiverPhone,jdbcType=CHAR},
+      </if>
+    </set>
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssmxzsc.po.Address">
+    update tb_address
+    set user_id = #{userId,jdbcType=CHAR},
+      address = #{address,jdbcType=VARCHAR},
+      added = #{added,jdbcType=TIMESTAMP},
+      receiver = #{receiver,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=CHAR}
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+</mapper>

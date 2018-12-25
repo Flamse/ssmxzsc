@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssmxzsc.mapper.OrderItemMapper">
+  <resultMap id="BaseResultMap" type="ssmxzsc.po.OrderItem">
+    <id column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="product" jdbcType="CHAR" property="product" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="order_id" jdbcType="CHAR" property="orderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rid, product, price, count, order_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order_item
+    where rid = #{rid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_order_item
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="ssmxzsc.po.OrderItem">
+    insert into tb_order_item (rid, product, price, 
+      count, order_id)
+    values (#{rid,jdbcType=INTEGER}, #{product,jdbcType=CHAR}, #{price,jdbcType=DOUBLE}, 
+      #{count,jdbcType=INTEGER}, #{orderId,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="ssmxzsc.po.OrderItem">
+    insert into tb_order_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
+      <if test="product != null">
+        product,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=CHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="ssmxzsc.po.OrderItem">
+    update tb_order_item
+    <set>
+      <if test="product != null">
+        product = #{product,jdbcType=CHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=CHAR},
+      </if>
+    </set>
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssmxzsc.po.OrderItem">
+    update tb_order_item
+    set product = #{product,jdbcType=CHAR},
+      price = #{price,jdbcType=DOUBLE},
+      count = #{count,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=CHAR}
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+</mapper>
