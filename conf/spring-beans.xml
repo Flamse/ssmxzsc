@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd ">
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		">
+		<beans>
+		<!-- mybatis-config.xml的转移 -->
+		<bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+			<property name="driver" value="com.mysql.jdbc.Driver"></property>
+			<property name="url" value="jdbc:mysql://localhost:3306/ssmxzsc?useSSL=false"></property>
+			<property name="username" value="root"></property>
+			<property name="password" value="123456"></property>
+		</bean>
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+			<!-- <property name="configLocation" value="classpath:ssmxzsc.util."></property>  可选-->
+			<property name="mapperLocations">
+				<list>
+					<value>classpath:ssmxzsc/mapper/*.xml</value>
+				</list>
+			</property>
+		</bean>
+		
+		<!-- 自动扫描注册mapper -->
+		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+			<property name="basePackage" value="ssmxzsc.mapper"></property>
+		</bean>
+		
+		<!-- 扫描业务类 -->
+		<context:component-scan base-package="ssmxzsc.service" />
+		
+		<!-- 注册事务管理器mapper -->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		<!-- 1.注解 -->
+		<!-- <tx:annotation-driven transaction-manager="trsactionManager" /> -->
+		<!-- @transaction(isolation=Isolation.DEFAULT, propagation=Propagation.SUPPORTS, readOnly=true) -->
+		<!-- 2.xml -->
+		<tx:advice id="txAdvice" transaction-manager="transactionManager">
+			<tx:attributes>
+				<tx:method name="update*" />
+				<tx:method name="delete*" />
+				<tx:method name="insert*" />
+				<tx:method name="add*" />
+				<tx:method name="plus*" />
+				<tx:method name="find*" isolation="DEFAULT" propagation="SUPPORTS" read-only="true" />
+				<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+				<tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+				<tx:method name="*" />
+			</tx:attributes>
+		</tx:advice>
+		<!-- aop -->
+		<aop:config>
+			<aop:advisor advice-ref="txAdvice" pointcut="execution(* ssmxzsc.service.*.*(..))" />
+		</aop:config>
+	</beans>
 </beans>

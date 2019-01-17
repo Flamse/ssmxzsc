@@ -19,16 +19,33 @@
     isbn, title, author, price, press, edition, published, pages, words, packaging, format, 
     form
   </sql>
+  
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_book join tb_collect on tb_book.isbn=tb_collect.product
+    where tb_collect.user_id=#{userId}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_book
     where isbn = #{isbn,jdbcType=CHAR}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from tb_book
+  </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_book
     where isbn = #{isbn,jdbcType=CHAR}
+    from tb_book
   </delete>
+  
+  
   <insert id="insert" parameterType="ssmxzsc.po.Book">
     insert into tb_book (isbn, title, author, 
       price, press, edition, 

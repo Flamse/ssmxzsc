@@ -1,4 +1,7 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -22,7 +25,7 @@
             <a href="" class="rt"><img id="search" src="../img/header/search.png" alt="搜索"/></a>
         </div>
         <div class="rt">
-            <ul class="lf">
+	        <ul class="lf">
 	            <li><a href="index.html" >首页</a><b>|</b></li>
 	            <li><a href="collect.html" >收藏</a><b>|</b></li>
 	            <li><a href="order.html" >订单</a><b>|</b></li>
@@ -45,7 +48,6 @@
         </div>
     </nav>
 </div>
-</div>
 <!--我的订单内容区域 #container-->
 <div id="container" class="clearfix">
     <!-- 左边栏-->
@@ -53,8 +55,8 @@
         <div class="line"></div>
         <dl class="my_order">
             <dt onClick="changeImage()">帐号管理<img src="../img/myOrder/myOrder1.png"></dt>
-            <dd class="first_dd"><a href="password-change.html">修改密码</a></dd>
-            <dd><a href="address-add.html">添加地址</a></dd>
+            <dd class="first_dd"><a href="password-change.jsp">修改密码</a></dd>
+            <dd><a href="address-add.jsp">添加地址</a></dd>
         </dl>
 
     </div>
@@ -62,53 +64,52 @@
     <div class="rightsidebar_box rt" >
         <div class="order_empty">
          <div id="cover" class="rt">
-      <form id="fm-add" method="post" name="form1">
+      <form name="form1" id="fm-changep" method="post" action="">
             <div class="txt">
-                <p>添加地址
+                <p>修改密码
                     <span>
                         <a href="index.html">继续购物</a>
                     </span>
                 </p>
+                <!-- 隐藏输入字段 -->
+                <input name="uname" id="uname" type="hidden" value="${userSession.uname }" />
                 <div class="text">
-                    <input type="text" placeholder="收件人" name="receiver" id="receiver" required>
-                    <span></span>
+                    <input type="password" placeholder="请输入当前密码" name="upwd" id="upwd" required>
+                    <div id="accountCheck"></div>
                 </div>
                 <div class="text">
-                    <input type="text" placeholder="地址" id="address" name="address" required minlength="6" maxlength="25">
-                    <span></span>
+                    <input type="password" placeholder="请输入新密码" name="npwd" id="npwd" required minlength="6" maxlength="15">
                 </div>
 				<div class="text">
-                    <input type="text" placeholder="联系电话" id="receiverPhone" name="receiverPhone" required minlength="11" maxlength="11">
-                    <span></span>
+                    <input type="password" placeholder="请确认新密码" name="cpwd" id="cpwd" required minlength="6" maxlength="15">
+                    <div id="pwdValidate"></div>
                 </div>
-                <input class="button_login" type="button" value="添加" id="bt-add" />
+                <div class="text">
+	                <input class="button_login" type="button" value="提交" id="bt-changep" />
+	                <div id="changeFail"></div>
+                </div>
             </div>
         </form>
         </div>
         </div>
     </div>
 </div>
-
 <!-- 品质保障，私人定制等-->
 <div id="foot_box">
     <div class="icon1 lf">
         <img src="../img/footer/icon1.png" alt=""/>
-
         <h3>品质保障</h3>
     </div>
     <div class="icon2 lf">
         <img src="../img/footer/icon2.png" alt=""/>
-
         <h3>私人定制</h3>
     </div>
     <div class="icon3 lf">
         <img src="../img/footer/icon3.png" alt=""/>
-
         <h3>学员特供</h3>
     </div>
     <div class="icon4 lf">
         <img src="../img/footer/icon4.png" alt=""/>
-
         <h3>专属特权</h3>
     </div>
 </div>
@@ -161,26 +162,67 @@
 <script src="../js/jquery.page.js"></script>
 <script src="../js/order.js"></script>
 <script type="text/javascript">
-	$('#bt-add').click(function(){
-    //读取用户的输入——表单序列化
-    var inputData = $('#fm-add').serialize();
-	console.log(">>>"+inputData);
-    //异步提交请求
-    $.ajax({
-    	async: true,
-        type: 'POST',
-        url: 'addAddress.action',
-        data: inputData,
-        success: function(txt, msg, xhr){
-        	// alert("*"+txt+"*");
-            if(txt=='yes'){
-                alert("添加成功！");
-                $('#fm-add').get(0).reset();
-            }else{ //修改失败
-            	alert("添加失败！");
+	var uname;
+	var upwd;
+	// 验证用户名密码
+	$('#npwd').focus(function(){
+		uname = $("#uname").val();
+		upwd = $("#upwd").val();
+		console.log(">>>"+uname);
+	    if (upwd == null || upwd == "") {
+	        $("#accountCheck").text("原密码不能为空！");
+	        $("#accountCheck").css("color","red");
+	        return false;
+	    }
+	    $.ajax({
+	        type:"POST",
+	        url:"uaccountCheck.do",
+	        data:"uname="+uname+"&upwd="+upwd,
+	        success:function(msg){
+	        	console.log(">>>"+msg);
+	            if(msg == "yes"){
+	                $("#accountCheck").text("");
+	            }else if(msg == "no"){
+	                $("#accountCheck").text("原密码错误");
+	                $("#accountCheck").css("color","red");
+	            }
+	        }
+	    });
+	});
+	//验证新密码和确认密码是否一致
+	$("#cpwd").blur(function(){
+		var npwd = $("#npwd").val();
+		var cpwd = $("#cpwd").val();
+		if(npwd==cpwd){
+			$("#pwdValidate").text("通过");
+        }else{
+            $("#pwdValidate").text("新密码不一致");
+            $("#pwdValidate").css("color","red");
+	        return false;
+		}
+	});
+	$('#bt-changep').click(function(){
+        //读取用户的输入——表单序列化
+        var inputData = $('#fm-changep').serialize();
+        //upwd=npwd;	//赋值无效
+        //inputData.upwd=inputData.npwd;
+		console.log(">>>"+inputData);
+        //异步提交请求
+        $.ajax({
+        	async: true,
+            type: 'POST',
+            url: 'changePassword.do',
+            data: inputData,
+            success: function(txt, msg, xhr){
+            	alert("*"+txt+"*");
+                if(txt=='yes'){  //修改成功
+                    window.location.href =  "login.html";
+                }else{ //修改失败
+                    $('#changeFail').html('修改失败！');
+                    $("#changeFail").css("color","red");
+                }
             }
-        }
+        });
     });
-});
 </script>
 </html>

@@ -28,7 +28,7 @@
 <div class="parent">
   <div class="container">
     <div class="panel rt">
-      <form id="fm-register" method="post" action="../ctrl/login.do">
+      <form id="fm-register" method="post" action="regist.do">
         <div class="txt">
           <p id="newuser">新用户注册
             <span>
@@ -37,8 +37,13 @@
           </p>
         </div>
         <div class="form-group">
+          <label for="phone">手机号：</label>
+          <input id="phone" name="phone" autofocus placeholder="请输入您的手机号" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" required type="text" />
+          <span class="msg-default hidden">请输入合法的手机号</span>
+        </div>
+        <div class="form-group">
           <label for="uname">用户名：</label>
-          <input autocomplete required minlength="6" maxlength="9" type="text" placeholder="请输入用户名" autofocus name="uname" id="uname"/>
+          <input autocomplete required minlength="6" maxlength="9" type="text" placeholder="请输入用户名" name="uname" id="uname"/>
           <span class="msg-default">用户名长度在6到9位之间</span>
         </div>
         <div class="form-group">
@@ -50,11 +55,6 @@
           <label for="email">邮箱：</label>
           <input autocomplete required type="email" placeholder="请输入邮箱地址" name="email" id="email"/>
           <span class="msg-default hidden">请输入合法的邮箱地址</span>
-        </div>
-        <div class="form-group">
-          <label for="phone">手机号：</label>
-          <input id="phone" name="phone" placeholder="请输入您的手机号" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" required type="text" />
-          <span class="msg-default hidden">请输入合法的手机号</span>
         </div>
         <div class="form-group">
           <label></label>
@@ -133,15 +133,18 @@
 </div>
 <!--弹出的小广告-->
 <script src="../js/jquery-3.1.1.min.js"></script>
+
 <script>
   $('#bt-register').click(function(){
     var lengths=0;
+//    $('#bt-register').attr("disabled",true);
     $('.form-group').each(function(){
       if($(this).find('span').hasClass('msg-success')){
         lengths++;
       }
     });
     if(lengths==4){
+//    	$('#bt-register').attr("disabled",false);
     	$('.modal').fadeIn();
     	setTimeout(function(){
     		$('#fm-register').submit();
@@ -150,7 +153,46 @@
   });
 </script>
 <script>
-  /*1.对用户名进行验证*/
+	/*1.对手机号进行验证*/
+	$('#phone').blur(function(){
+	  if(this.validity.valueMissing){
+	    this.nextElementSibling.innerHTML = '手机号不能为空';
+	    this.nextElementSibling.className = 'msg-error';
+	    this.setCustomValidity('手机号不能为空');
+	  }else if(this.validity.patternMismatch){
+	    this.nextElementSibling.innerHTML = '手机号格式不正确';
+	    this.nextElementSibling.className = 'msg-error';
+	    this.setCustomValidity('手机号格式不正确');
+	  }else {
+	    this.nextElementSibling.innerHTML = '手机号格式正确';
+	    this.nextElementSibling.className = 'msg-success';
+	    this.setCustomValidity('');
+	  //  var data =document.getElementById("phone").value;
+	    var data = $("#phone").val();
+	    if(!data){   //用户没有输入任何内容
+	      return;
+	    }
+	    /*发起异步GET请求，询问服务器手机号是否已经存在*/
+	    $.ajax({
+			  type:'post',
+			  data:'phone='+data,
+			  url:'phoneCheck.do',
+			  success:function(data){
+		          console.log('开始处理响应数据');
+		          // alert("*"+data+"*");
+		          if(data=='yes'){
+		        	 alert('该号码已被占用');
+		          }
+			  }
+		  });
+	  }
+	});
+	$('#phone').focus(function(){
+	  this.nextElementSibling.innerHTML = '请输入合法的手机号';
+	  this.nextElementSibling.className = 'msg-default';
+	});
+
+  /*2.对用户名进行验证*/
   $('#uname').blur(function(){
     if(this.validity.valueMissing){
       this.nextElementSibling.innerHTML = '用户名不能为空';
@@ -173,7 +215,7 @@
       $.ajax({
 		  type:'post',
 		  data:'uname='+data,
-		  url:'../ctrl/unameCheck.do',
+		  url:'unameCheck.do',
 		  success:function(data){
 	          console.log('开始处理响应数据');
 	          // alert("*"+data+"*");
@@ -188,7 +230,7 @@
     this.nextElementSibling.innerHTML = '用户名长度在6到9位之间';
     this.nextElementSibling.className = 'msg-default';
   });
-  /*2.对密码进行验证*/
+  /*3.对密码进行验证*/
   $('#upwd').blur(function(){
     if(this.validity.valueMissing){
       this.nextElementSibling.innerHTML = '密码不能为空';
@@ -208,7 +250,7 @@
     this.nextElementSibling.innerHTML = '密码长度在6到12位之间';
     this.nextElementSibling.className = 'msg-default';
   });
-  /*3.对邮箱地址进行验证*/
+  /*4.对邮箱地址进行验证*/
   $('#email').blur(function(){
     if(this.validity.valueMissing){
       this.nextElementSibling.innerHTML = '邮箱不能为空';
@@ -231,7 +273,7 @@
       $.ajax({
 		  type:'post',
 		  data:'email='+data,
-		  url:'../ctrl/emailCheck.do',
+		  url:'emailCheck.do',
 		  success:function(data){
 	          console.log('开始处理响应数据');
 	          // alert("*"+data+"*");
@@ -246,44 +288,7 @@
     this.nextElementSibling.innerHTML = '请输入合法的邮箱地址';
     this.nextElementSibling.className = 'msg-default';
   });
-  /*4.对手机号进行验证*/
-  $('#phone').blur(function(){
-    if(this.validity.valueMissing){
-      this.nextElementSibling.innerHTML = '手机号不能为空';
-      this.nextElementSibling.className = 'msg-error';
-      this.setCustomValidity('手机号不能为空');
-    }else if(this.validity.patternMismatch){
-      this.nextElementSibling.innerHTML = '手机号格式不正确';
-      this.nextElementSibling.className = 'msg-error';
-      this.setCustomValidity('手机号格式不正确');
-    }else {
-      this.nextElementSibling.innerHTML = '手机号格式正确';
-      this.nextElementSibling.className = 'msg-success';
-      this.setCustomValidity('');
-    //  var data =document.getElementById("phone").value;
-      var data = $("#phone").val();
-      if(!data){   //用户没有输入任何内容
-        return;
-      }
-      /*发起异步GET请求，询问服务器手机号是否已经存在*/
-      $.ajax({
-		  type:'post',
-		  data:'phone='+data,
-		  url:'../ctrl/phoneCheck.do',
-		  success:function(data){
-	          console.log('开始处理响应数据');
-	          // alert("*"+data+"*");
-	          if(data=='yes'){
-	        	 alert('该号码已被占用');
-	          }
-		  }
-	  });
-    }
-  });
-  $('#phone').focus(function(){
-    this.nextElementSibling.innerHTML = '请输入合法的手机号';
-    this.nextElementSibling.className = 'msg-default';
-  });
+
 </script>
 </body>
 </html>

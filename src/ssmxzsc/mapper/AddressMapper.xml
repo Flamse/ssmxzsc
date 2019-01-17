@@ -22,6 +22,8 @@
     delete from tb_address
     where rid = #{rid,jdbcType=INTEGER}
   </delete>
+  
+  
   <insert id="insert" parameterType="ssmxzsc.po.Address">
     insert into tb_address (rid, user_id, address, 
       added, receiver, receiver_phone

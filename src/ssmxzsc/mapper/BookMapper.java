@@ -1,5 +1,7 @@
 package ssmxzsc.mapper;
 
+import java.util.List;
+
 import ssmxzsc.po.Book;
 
 public interface BookMapper {
@@ -14,4 +16,11 @@ public interface BookMapper {
     int updateByPrimaryKeySelective(Book record);
 
     int updateByPrimaryKey(Book record);
+    /**
+     * 查询所有图书信息
+     * @return 返回所有图书对象的集合
+     */
+    List<Book> selectAll();
+
+	List<Book> selectByUserId(String userId);
 }

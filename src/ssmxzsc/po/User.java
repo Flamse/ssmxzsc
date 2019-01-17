@@ -50,4 +50,11 @@ public class User {
     public void setRole(Integer role) {
         this.role = role;
     }
+
+	@Override
+	public String toString() {
+		return "User [phone=" + phone + ", uname=" + uname + ", upwd=" + upwd + ", email=" + email + ", role=" + role
+				+ "]";
+	}
+    
 }

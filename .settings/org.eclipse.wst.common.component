@@ -3,6 +3,23 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/conf"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/banner"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/cart"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/css"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/datepicker"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/footer"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/goods"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/header"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/js"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/lookforward"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/model"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/myCollect"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/myOrder"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/orderinfo"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/page"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/pay"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/product_detail"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/recommend"/>
         <property name="java-output-path" value="/ssmxzsc/build/classes"/>
         <property name="context-root" value="ssmxzsc"/>
     </wb-module>

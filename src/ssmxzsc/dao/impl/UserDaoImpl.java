@@ -21,15 +21,12 @@ public class UserDaoImpl implements UserMapper {
 	public User selectUser_byPhone(String phone) {
 		// TODO Auto-generated method stub
 		//获取SqlSession,使用Util类
-		SqlSession sqlSession = MybatisUtil.getSqlSessionFactory().openSession();
-				
+		SqlSession sqlSession = MybatisUtil.getSqlSessionFactory().openSession();		
 		//查询操作
 		User user = sqlSession.selectOne("ssmxzsc.dao.UderDao.selectUser_byPhone", phone);
 		System.out.println(user.toString());
-		
 		//提交
 		sqlSession.commit();
-		
 		//关闭SqlSession
 		sqlSession.close();
 		return user;

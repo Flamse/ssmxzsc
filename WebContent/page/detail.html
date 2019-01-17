@@ -99,7 +99,8 @@
         <!-- 购买部分-->
         <div class="shops">
             <a href="#" class="buy lf" id="buy_now">立即购买</a>
-            <a href="#" class="shop lf" id="add_cart"><img src="../img/product_detail/product_detail_img7.png" alt=""/>加入购物车</a>
+            <input type="button" class="shop lf" id="add_cart" src="../img/product_detail/product_detail_img7.png" value="加入购物车">
+            <!-- <a href="" class="shop lf" id="add_cart"><img src="../img/product_detail/product_detail_img7.png" alt=""/>加入购物车</a> -->
             <a href="#" class="collection lf" id="collect"><span>收藏</span></a><b><img src='../img/product_detail/product_detail_img62.png' alt=""/></b>
         </div>
     </div>
@@ -430,16 +431,17 @@
     var buyAccount;
     $("#add_cart").click(function (e) {
         //数量取值
-        /*
         buyAccount = $("#buy-num").val();
         console.log(buyAccount);
+        //json数据
         var params = {
         	count: buyAccount,
         	product: 9787115435101
+        	usre_id: ${userSession.phone}
         };
         $.ajax({
             type: "post",
-            url: "addToCart.htm",
+            url: "addToCart.htm?",
             data: params,
             success: function (data) {
                 if (data == 'yes') {
@@ -452,7 +454,6 @@
                 alert("系统异常！");
             }
         });
-        */
         var url = "cart.html";
         window.location.href = url;
     })

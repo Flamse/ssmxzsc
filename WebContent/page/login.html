@@ -112,6 +112,7 @@
 </div>
 <script src="../js/jquery-3.1.1.min.js"></script>
 <script>
+	//用户名检查
     $("#uname").blur(function(){
         var data = $("#uname").val();
         if (data == null || data == "") {
@@ -120,18 +121,19 @@
             return false;
         }
         $.ajax({
-            type:"POST",
-            url:"unameCheck.action",
+            type:"post",
             data:"uname="+data,
+            url:"unameCheck.do",
             beforeSend:function(XMLHttpRequest)
             {
-                $("#showResult").text("正在查询");
-
+            	$("#showResult").text("正在查询");
+                //$setTimeOut($("#showResult").text("正在查询"),9000);//有趣，换成延时就有用了
+                //8080端口只会显示系统异常，11335端口正在查询只会闪一下就消失
             },
             success:function(msg)
             {
                 if(msg ==="yes"){
-                    $("#showResult").text("");
+                    $("#showResult").text("正确！");
                 }else if(msg === 'no'){
                     $("#showResult").text("该用户不存在");
                     $("#showResult").css("color","red");
@@ -145,22 +147,24 @@
             }
         });
     });
+    //登录处理
     $('#bt-login').click(function(){
-        window.location.href =  "index.html";
+        //window.location.href =  "index.html";
         //读取用户的输入——表单序列化
         var inputData = $('#fm-login').serialize();
-        // alert(inputData);
+        alert(inputData);
         //异步提交请求，进行验证
         $.ajax({
         	async: true,
-            type: 'POST',
-            url: 'login.action',
+            type: 'post',
+            url: 'login.do',
             data: inputData,
             success: function(txt, msg, xhr){
-            	// alert("*"+txt+"*");
+            	//alert("*"+txt+"*");
                 if(txt=='yes'){  //登录成功
                     var loginName = $('[name="uname"]').val();
                     console.log(loginName);
+                    alert(loginName);
                     window.location.href =  "index.html";
                 }else{ //登录失败
                     $('#showResult').html('登录失败！');

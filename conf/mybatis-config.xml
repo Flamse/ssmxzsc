@@ -13,6 +13,6 @@
 	</environment>
 </environments>
 <mappers>
-	<mapper resource="ssmxzsc/mapperOld/UserMapper.xml" />
+	<mapper resource="ssmxzsc/mapper/UserMapper.xml" />
 </mappers>
 </configuration>
